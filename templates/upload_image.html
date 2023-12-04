@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Upload</title>
+    <style>
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      form {
+        text-align: center;
+        font-family: Roboto, sans-serif;
+        font-size: 50px;
+      }
+
+      #image-preview {
+        max-width: 300px;
+        max-height: 200px;
+        margin-top: 10px;
+      }
+
+      button {
+        width: 150px;
+        height: 46px;
+        border-radius: 10px;
+        background: #957dad;
+        font-size: 20px;
+      }
+
+      a {
+        position: absolute;
+        left: 0;
+        top: 0;
+        margin: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="{% url 'index' %}"><button>Return</button></a>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">Upload Image</button>
+    </form>
+
+    <img id="image-preview" />
+
+    <script>
+      function previewImage(input) {
+        var preview = document.getElementById('image-preview');
+        var file = input.files[0];
+        var reader = new FileReader();
+
+        reader.onloadend = function () {
+          preview.src = reader.result;
+        };
+
+        if (file) {
+          reader.readAsDataURL(file);
+        } else {
+          preview.src = '';
+        }
+      }
+
+      document.getElementById('id_image').onchange = function () {
+        previewImage(this);
+      };
+    </script>
+  </body>
+</html>
